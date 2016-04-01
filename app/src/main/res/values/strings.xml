@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">MoviePop</string>
+    <string name="action_settings">Settings</string>
+    <string name="movie_image">Movie Poster</string>
+    <string name="movie_extraText">Description : %1$s</string>
+    <string name="posterThumbnail">posterThumbnail</string>
+    <string name="movie_activity_detail">Movie Details</string>
+    <string name="click_to_see_details">Click to see details</string>
+    <string name="title_activity_settings">Sort Order</string>
+    <string name="most_popular_title">Most Popular</string>
+    <string name="highest_rated_title">Highest Rated</string>
+    <string name="favorite_title">Favorites</string>
+    <string name="most_popular_key">most_popular</string>
+    <string name="most_popular_value">popularity.desc</string>
+    <string name="highest_rated_key">highest_rated</string>
+    <string name="highest_rated_value">vote_average.desc</string>
+    <string name="favorite_key">favorite</string>
+    <string name="favorite_value">1</string>
+    <string name="sort_by">View</string>
+    <!-- Key name for sort by preference in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_by_key" translatable="false">sort_by</string>
+
+    <!-- Value in SharedPreferences for most popular option [CHAR LIMIT=NONE] -->
+    <string name="pref_sort_by_most_popular" translatable="false">vote_average.desc</string>
+    <string name="watch_trailer_text">"Watch Trailer on "</string>
+    <string name="add_as_favorite">add as favorite</string>
+    <string name="remove_favorite">remove favorite</string>
+    <string name="click_for_description">Click for Description</string>
+
+    <string name="content_authority">com.example.bwargo.moviepop</string>
+    <string name="reviews_title">Reviews</string>
+    <string name="pref_sort_by_favorites">favorites</string>
+    <string name="mark_favorite">Favorite: </string>
+    <string name="remove_as_favorite">Remove As Favorite</string>
+    <string name="rating_title">Rating:</string>
+    <string name="release_date_title">Release Date:</string>
+    <string name="play_trailer">Play Trailer</string>
+</resources>
