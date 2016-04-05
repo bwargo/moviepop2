@@ -4,11 +4,9 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,13 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bwargo.moviepop.BuildConfig;
+import com.example.bwargo.moviepop.R;
 import com.example.bwargo.moviepop.adapters.CustomLinearLayoutAdapter;
 import com.example.bwargo.moviepop.adapters.CustomReviewAdapter;
+import com.example.bwargo.moviepop.data.MovieContract;
 import com.example.bwargo.moviepop.model.Movie;
-import com.example.bwargo.moviepop.R;
 import com.example.bwargo.moviepop.model.Trailer;
 import com.example.bwargo.moviepop.model.Utility;
-import com.example.bwargo.moviepop.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -61,6 +59,7 @@ public class DetailActivityFragment extends Fragment {
     }
     @Override
     public void onCreate(Bundle savedInstanceBundle){
+        Log.v(LOG_TAG," onCreate Moviepop2");
         super.onCreate(savedInstanceBundle);
         //setHasOptionsMenu(true);
         Intent intent = getActivity().getIntent();
@@ -71,16 +70,22 @@ public class DetailActivityFragment extends Fragment {
             mReviewAdapter = new CustomReviewAdapter(getActivity(), null);
             updateTrailers();
             updateReviews();
+        }else {
+            Bundle args = getArguments();
+            if (args != null) {
+                mMovie = (Movie) args.getSerializable("movie");
+            }
         }
     }
     @Override
     public void onStart(){
+        Log.v(LOG_TAG," onStart Moviepop2");
         super.onStart();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.v(LOG_TAG," onCreateView Moviepop2");
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         if(mMovie != null) {
@@ -95,68 +100,70 @@ public class DetailActivityFragment extends Fragment {
 
             mMovie.favorite = queryFavorite(mMovie);
             toggleAsFavorite();
+
+
+            ListView mTrailersListView = (ListView) rootView.findViewById(R.id.trailer_list);
+            mTrailersListView.setAdapter(layoutAdapter);
+
+            mTrailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String key = layoutAdapter.trailers.get(position).key;
+                    Utility.playYoutube(key, getActivity());
+                }
+            });
+
+            mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    mMovie.favorite = 0;
+                    //toggleAsFavorite();
+                    updateMovieDatabase();
+                    Toast toast = Toast.makeText(getActivity(), "Movie removed from Favorites", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            mUnFavoriteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    mMovie.favorite = 1;
+                    //toggleAsFavorite();
+                    updateMovieDatabase();
+                    Toast toast = Toast.makeText(getActivity(), "Movie added to Favorites", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            /*mTrailersAdapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    setListViewHeightBasedOnChildren(mTrailersListView);
+                }
+            });*/
+
+            ListView mReviewssListView = (ListView) rootView.findViewById(R.id.reviews_list);
+
+            mReviewssListView.setAdapter(mReviewAdapter);
+
+           /* mReviewAdapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    setListViewHeightBasedOnChildren(mReviewssListView);
+                }
+            });*/
         }
-
-        ListView mTrailersListView = (ListView) rootView.findViewById(R.id.trailer_list);
-        mTrailersListView.setAdapter(layoutAdapter);
-
-        mTrailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String key = layoutAdapter.trailers.get(position).key;
-                Utility.playYoutube(key, getActivity());
-            }
-        });
-
-        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mMovie.favorite = 0;
-                //toggleAsFavorite();
-                updateMovieDatabase();
-                Toast toast = Toast.makeText(getActivity(), "Movie removed from Favorites",Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-        mUnFavoriteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mMovie.favorite = 1;
-                //toggleAsFavorite();
-                updateMovieDatabase();
-                Toast toast = Toast.makeText(getActivity(), "Movie added to Favorites",Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-
-        /*mTrailersAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                setListViewHeightBasedOnChildren(mTrailersListView);
-            }
-        });*/
-
-        ListView mReviewssListView = (ListView) rootView.findViewById(R.id.reviews_list);
-
-        mReviewssListView.setAdapter(mReviewAdapter);
-
-       /* mReviewAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                setListViewHeightBasedOnChildren(mReviewssListView);
-            }
-        });*/
         return rootView;
     }
 
     private void toggleAsFavorite() {
-
-        if(mMovie.getFavoriteAsBoolean()) {
-            mUnFavoriteButton.setVisibility(View.GONE);
-            mFavoriteButton.setVisibility(View.VISIBLE);
-        }else{
-            mFavoriteButton.setVisibility(View.GONE);
-            mUnFavoriteButton.setVisibility(View.VISIBLE);
+        if(mMovie != null) {
+            if (mMovie.getFavoriteAsBoolean()) {
+                mUnFavoriteButton.setVisibility(View.GONE);
+                mFavoriteButton.setVisibility(View.VISIBLE);
+            } else {
+                mFavoriteButton.setVisibility(View.GONE);
+                mUnFavoriteButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -264,7 +271,7 @@ public class DetailActivityFragment extends Fragment {
 
     @Override
     public void onResume(){
-        Log.i(LOG_TAG," onResume");
+        Log.v(LOG_TAG," onResume Moviepop2");
         super.onResume();
     }
     public class FetchTrailerData extends AsyncTask<String,Void,ArrayList<Trailer>> {
@@ -281,12 +288,11 @@ public class DetailActivityFragment extends Fragment {
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-
-            String movieDataJsonStr = null;
+            String movieDataJsonStr;
 
             try {
 
-                final String MOVIEDATA_BASE_URL = "http://api.themoviedb.org/3/movie/";
+                final String MOVIEDATA_BASE_URL = BuildConfig.BASE_URL_THEMOVIEDB;
                 final String APPKEY = "api_key";
                 final String moviePath = "videos";
 
@@ -359,16 +365,13 @@ public class DetailActivityFragment extends Fragment {
             ArrayList<Trailer> videos = Trailer.fromJson(resultsArray);
             mMovie.trailers = videos;
             for (Trailer s : videos) {
-
                 Log.v(LOG_TAG, "Trailer entry: " + s.name + s.type);
             }
             return videos;
-
         }
-
         @Override
         protected void onPostExecute(ArrayList<Trailer> result){
-
+            Log.v(LOG_TAG," onPostExecute Moviepop2");
             if(result != null){
                 layoutAdapter.trailers = result;
                 layoutAdapter.notifyDataSetChanged();

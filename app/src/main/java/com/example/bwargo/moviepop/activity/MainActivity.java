@@ -14,7 +14,8 @@ import com.example.bwargo.moviepop.R;
 import com.example.bwargo.moviepop.data.MovieLoader;
 import com.example.bwargo.moviepop.fragment.DetailActivityFragment;
 import com.example.bwargo.moviepop.fragment.MainActivityFragment;
-import com.example.bwargo.moviepop.model.Movie;
+
+import java.io.Serializable;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
@@ -24,12 +25,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "onCreate Moviepop2");
+        Log.v(LOG_TAG, "onCreate" + getString(R.string.screen_type) + " layout-type Moviepop2");
         super.onCreate(savedInstanceState);
+        Log.v(LOG_TAG, "onCreate passed super" + getString(R.string.screen_type) + " layout-type Moviepop2");
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         tabletLayout = findViewById(R.id.full_movie_details) != null;
+        if(tabletLayout && savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.full_movie_details, new DetailActivityFragment())
+                    .commit();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,24 +84,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
     }
     @Override
-    public void onItemSelected(String movieData) {
+    public void onItemSelected(Serializable movieData) {
         if (tabletLayout) {
             Log.v(LOG_TAG, "onItemSelected tablet-size MoviePop2");
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle args = new Bundle();
-            args.putSerializable("movie",Movie.fromJsonStr(movieData));
+            args.putSerializable("movie",movieData);
 
             DetailActivityFragment fragment = new DetailActivityFragment();
             fragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container_detail, fragment)
+                    .replace(R.id.full_movie_details, fragment)
                     .commit();
         } else {
             Log.v(LOG_TAG, "onItemSelected phone-size MoviePop2");
-            Intent intent = new Intent(this, DetailActivity.class).putExtra("movie", Movie.fromJsonStr(movieData));
+            Intent intent = new Intent(this, DetailActivity.class).putExtra("movie", movieData);
             startActivity(intent);
         }
     }
