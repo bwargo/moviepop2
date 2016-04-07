@@ -35,4 +35,5 @@
     <string name="rating_title">Rating:</string>
     <string name="release_date_title">Release Date:</string>
     <string name="play_trailer">Play Trailer</string>
+    <string name="placeholder_text">Please select a Movie to view Details</string>
 </resources>

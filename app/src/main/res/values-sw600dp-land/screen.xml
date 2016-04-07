@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="screen_type">820dp</string>
+    <string name="screen_type">sw600dp-land</string>
 </resources>

@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="?android:attr/actionBarSize"
         android:orientation="vertical"
-        android:background="@color/beige"
         tools:context="com.example.android.sunshine.app.DetailActivity.DetailFragment">
         <FrameLayout
             android:layout_width="match_parent"
@@ -24,7 +23,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/primary_text"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
         </FrameLayout>
@@ -47,7 +45,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:text="@string/mark_favorite"
-                android:textColor="@color/primary_text"
                 android:textSize="20sp" />
             <ImageButton
                 android:contentDescription="@string/add_as_favorite"
@@ -106,7 +103,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:text="@string/rating_title"
-                android:textColor="@color/primary_text"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/rating"
@@ -117,7 +113,6 @@
                 android:layout_marginStart="6dp"
                 android:layout_toRightOf="@+id/rating_title"
                 android:layout_toEndOf="@+id/rating_title"
-                android:textColor="@color/primary_text"
                 android:textSize="18sp"/>
             <TextView
                 android:id="@+id/release_date_title"
@@ -129,7 +124,6 @@
                 android:layout_toRightOf="@+id/rating"
                 android:layout_toEndOf="@+id/rating"
                 android:text="@string/release_date_title"
-                android:textColor="@color/primary_text"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/release_date"
@@ -140,7 +134,6 @@
                 android:layout_marginStart="6dp"
                 android:layout_toRightOf="@+id/release_date_title"
                 android:layout_toEndOf="@+id/release_date_title"
-                android:textColor="@color/primary_text"
                 android:textSize="18sp" />
         </RelativeLayout>
         <View
@@ -162,7 +155,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:text="@string/reviews_title"
-            android:textColor="@color/primary_text"
             android:textSize="20sp" />
 
         <ListView

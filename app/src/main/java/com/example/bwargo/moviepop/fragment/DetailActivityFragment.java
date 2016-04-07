@@ -66,15 +66,17 @@ public class DetailActivityFragment extends Fragment {
 
         if(intent != null && intent.hasExtra("movie")) {
             mMovie = (Movie) intent.getSerializableExtra("movie");
-            layoutAdapter = new CustomLinearLayoutAdapter(getActivity(), null);
-            mReviewAdapter = new CustomReviewAdapter(getActivity(), null);
-            updateTrailers();
-            updateReviews();
         }else {
             Bundle args = getArguments();
             if (args != null) {
                 mMovie = (Movie) args.getSerializable("movie");
             }
+        }
+        if(mMovie != null){
+            layoutAdapter = new CustomLinearLayoutAdapter(getActivity(), null);
+            mReviewAdapter = new CustomReviewAdapter(getActivity(), null);
+            updateTrailers();
+            updateReviews();
         }
     }
     @Override
@@ -86,9 +88,9 @@ public class DetailActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.v(LOG_TAG," onCreateView Moviepop2");
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         if(mMovie != null) {
+            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             ((TextView) rootView.findViewById(R.id.originalTitle)).setText(mMovie.originalTitle);
             ImageView imageView = (ImageView) rootView.findViewById(R.id.backdrop);
             Picasso.with(getContext()).load(baseUrl + mMovie.backdrop).into(imageView);
@@ -151,8 +153,11 @@ public class DetailActivityFragment extends Fragment {
                     setListViewHeightBasedOnChildren(mReviewssListView);
                 }
             });*/
+
+            return rootView;
+        }else{
+            return inflater.inflate(R.layout.two_pane_placeholder, container, false);
         }
-        return rootView;
     }
 
     private void toggleAsFavorite() {

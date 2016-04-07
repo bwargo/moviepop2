@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "onCreate" + getString(R.string.screen_type) + " layout-type Moviepop2");
+        Log.v(LOG_TAG, "onCreate " + getString(R.string.screen_type) + " layout-type Moviepop2");
         super.onCreate(savedInstanceState);
-        Log.v(LOG_TAG, "onCreate passed super" + getString(R.string.screen_type) + " layout-type Moviepop2");
+        Log.v(LOG_TAG, "onCreate passed super " + getString(R.string.screen_type) + " layout-type Moviepop2");
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.settings) {
-            startActivity(new Intent(this,SettingsActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -104,5 +104,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             Intent intent = new Intent(this, DetailActivity.class).putExtra("movie", movieData);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.v(LOG_TAG, "onSaveInstanceState Moviepop2");
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("tabletLayout", tabletLayout);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.v(LOG_TAG, "onRestoreInstanceState Moviepop2");
+        super.onRestoreInstanceState(savedInstanceState);
+        tabletLayout = savedInstanceState.getBoolean("tabletLayout");
     }
 }

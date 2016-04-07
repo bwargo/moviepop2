@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.bwargo.moviepop.R;
 import com.example.bwargo.moviepop.adapters.FavoritesAdapter;
 import com.example.bwargo.moviepop.fragment.MainActivityFragment;
+import com.example.bwargo.moviepop.model.Movie;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,7 +129,7 @@ public class MovieLoader extends Fragment implements LoaderManager.LoaderCallbac
                     Log.e("casting JSON from DB", e.getLocalizedMessage());
                     e.fillInStackTrace();
                 }
-                ((MainActivityFragment.Callback) getActivity()).onItemSelected(jsonObject.toString());
+                ((MainActivityFragment.Callback) getActivity()).onItemSelected(Movie.fromJsonStr(jsonObject.toString()));
             }
         });
 
