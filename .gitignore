@@ -6,6 +6,7 @@
 .DS_Store
 /build
 /captures
+.idea/vcs.xml
 
 # Built application files
 *.apk
@@ -45,4 +46,4 @@ captures/
 *.jks
 
 # api key file
-
+app/src/main/res/values/api-key.xml
