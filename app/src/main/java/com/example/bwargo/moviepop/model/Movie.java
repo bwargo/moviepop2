@@ -16,11 +16,8 @@ public class Movie implements Serializable{
     public String rating;
     public String releaseDate;
     public String backdrop;
-
     public int favorite;
-
     public List<Trailer> trailers;
-
     public List<Review> reviews;
 
     public Movie(int id, String movieInfo, String thumbnailPath){
@@ -36,14 +33,7 @@ public class Movie implements Serializable{
     public int getIdAsInt(){
         return id;
     }
-    public boolean getFavoriteAsBoolean(){
-
-        if (this.favorite == 1){
-            return true;
-        }else{
-            return false;
-        }
-    }
+    public boolean getFavoriteAsBoolean(){return this.favorite == 1;}
 
     public Movie(JSONObject object){
         try {

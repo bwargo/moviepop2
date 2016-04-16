@@ -3,8 +3,6 @@ package com.example.bwargo.moviepop.data;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.example.bwargo.moviepop.model.Movie;
-
 /**
  * Created by bwargo on 4/14/16.
  */
