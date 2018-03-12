@@ -5,3 +5,4 @@ It then allows user to mark movies as Favorites.
 
 ** NOTE ** 
 you must sign up for API KEY for the APP to work
+https://developers.themoviedb.org/3/getting-started/introduction
